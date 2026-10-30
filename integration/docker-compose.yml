@@ -1,0 +1,18 @@
+# LOCAL DISPOSABLE INTEGRATION TESTING ONLY.
+# These credentials must never be used in production.
+services:
+  postgres:
+    image: postgres:16.5-bookworm
+    environment:
+      POSTGRES_DB: permish_test
+      POSTGRES_USER: permish_admin
+      POSTGRES_PASSWORD: permish-admin-password
+    ports:
+      - "127.0.0.1:54329:5432"
+    volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U permish_admin -d permish_test"]
+      interval: 1s
+      timeout: 3s
+      retries: 30

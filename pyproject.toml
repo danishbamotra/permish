@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "permish"
+version = "0.1.0"
+description = "Authorization regression testing for multi-tenant applications"
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+include = ["permish*"]
+
+[project.optional-dependencies]
+postgres = ["psycopg[binary]>=3.1,<4"]
+test = ["pytest>=8"]
+demo = ["Flask>=3.0,<4", "psycopg[binary]>=3.1,<4"]
+
+[project.scripts]
+permish = "permish.cli:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests/test_engine.py", "tests/test_cli.py"]
+markers = [
+    "integration: requires Docker and a disposable PostgreSQL database",
+]
